@@ -10,7 +10,9 @@ It's an Android Emulator For Windows Devices Based on QEMU
 # System Requirement
 
 CPU : X86 Dual Core CPU
+
 Ram : 2gb Ram
+
 GPU : (any)
 
 # ScreenShot
