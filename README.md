@@ -7,13 +7,13 @@ Now It's On Version 1.0
 
 It's an Android Emulator For Windows Devices Based on QEMU
 
-#System Requirement
+# System Requirement
 
 CPU : X86 Dual Core CPU
 Ram : 2gb Ram
 GPU : (any)
 
-#ScreenShot
+# ScreenShot
 
 ![wd](https://github.com/ahmedbarakat2007/WinDroid/assets/118398763/7df22b73-8c5a-430f-8b52-30f9f689d4df)
 
