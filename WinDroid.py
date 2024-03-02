@@ -3,116 +3,61 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import ttk
 import os
+import time
+import psutil
 from tkinter import messagebox
 import zipfile
 
-option=[]
-
-'''def options():
-    def destroy():
-        option.append(n.get())
-        option.append(na.get())
-        option.append(naa.get())
-
-        print(option)
-        
-    m5 = Tk()
-    m5.geometry("400x350")
-    m5.configure(bg="white")
-    m5.resizable(0, 0)
-    m5.iconbitmap("icon.ico")
-    m5.title("Options")
-
-    
-
-    Label(m5,text="",bg="white").pack()
-    Label(m5,text="",bg="white").pack()
-    Label(m5, text="Options", font='san-serif 16 bold' ,bg="white", foreground="black").pack()
-    Label(m5,text="",bg="white").pack()
-    Label(m5,text="",bg="white").pack()
-    Label(m5, text="Ram:", font='san-serif 12 bold' ,bg="white", foreground="black").pack()
-
-   
-
-    reschoosen2 = ["512M","1G","2G","3G","4G","6G","8G","12G","16G"]
-    n = tk.StringVar()
-    n.set(reschoosen2[0])
-
-    reschoosena = ttk.Combobox(m5, width = 27,values=reschoosen2, textvariable = n)
-    reschoosena.pack()
-
-    Label(m5, text="Network:", font='san-serif 12 bold' ,bg="white", foreground="black").pack()
-    
-    
-    reschoosen3 = ["e1000","i82551","i82557b","i82559er","ne2k_pci","ne2k_isa","pcnet","rtl8139","virtio"]
-    na = tk.StringVar()
-    na.set(reschoosen3[0])
-    
-    reschoosenaa = ttk.Combobox(m5, width = 27,values=reschoosen3, textvariable = na)
-    reschoosenaa.pack()
-    
-
-    Label(m5, text="VGA:", font='san-serif 12 bold' ,bg="white", foreground="black").pack()
-    reschoosen4 = ["std","vmware","cirrus","qxl"]
-
-    naa = tk.StringVar()
-    naa.set(reschoosen4[0])
-    reschoosenaaa = ttk.Combobox(m5, width = 27,values=reschoosen4, textvariable = naa)
-    reschoosenaaa.pack()
-
-    Label(m5,text="",bg="white").pack()
-    Label(m5,text="",bg="white").pack()
-    f8 = Button(m5, text='Ok', font='san-serif 16 bold', background='#01A6F0',foreground="white",borderwidth="0", padx=2,width="10", command=destroy).pack()
-
-    m5.mainloop()'''
-    
+def center_window(window, width, height):
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x =(screen_width - width) // 2
+    y =(screen_height - height) // 2
+    window.geometry(f"{width}x{height}+{x}+{y}")
 
 def run():
+    mem_byte = psutil.virtual_memory().total
+    mem_gib = str(int(mem_byte / (1024.**2)))
+    cpu_count = str(int(os.cpu_count()))
     try:
         if (os.path.isfile("Files/qemu/android.IMG") == True):
-            if (entry.get() != ""):
-                os.system("Files\qemu\qemu-system-i386w -m "+ entry.get()+" -display sdl,frame=off,window_close=on -hda Files/qemu/android.IMG --accel tcg,thread=multi")
-            else:
-                msg = messagebox.showerror("Error", "Please Enter Ram Amount")
+            os.system('Files\qemu\qemu-system-i386 -m '+ mem_gib +' -smp '+ cpu_count +' -display sdl,frame=off,window_close=on -hda Files/qemu/android.IMG --accel tcg,thread=multi -name "Windroid : Running"')
+            root.destroy()
         else:
             if(os.path.isfile("Files/qemu/android.rom") == True):
                 with zipfile.ZipFile("Files/qemu/android.rom", 'r') as zip_ref:
                     zip_ref.extractall("Files/qemu/")
-                os.remove("Files/qemu/android.rom")
-                if (entry.get() != ""):
-                    os.system("Files\qemu\qemu-system-i386w -m "+ entry.get()+" -display sdl,frame=off,window_close=on -hda Files/qemu/android.IMG --accel tcg,thread=multi")
-                else:
-                    msg = messagebox.showerror("Error", "Please Enter Ram Amount")
+                    os.remove("Files/qemu/android.rom")
+                    os.system('Files\qemu\qemu-system-i386 -m '+ mem_gib +' -smp '+ cpu_count +' -display sdl,frame=off,window_close=on -hda Files/qemu/android.IMG --accel tcg,thread=multi -name "Windroid : Running"')
+                    root.destroy()
             else:
                 msg = messagebox.showerror("Error", "Rom File Not Found")
+                root.destroy()
     except:
         msg = messagebox.showerror("Error", "SomeThing Wrong Happened!!")
+        root.destroy()
+    
 
 
 root = tk.Tk()
-root.geometry("400x600")
+center_window(root, 500, 100)
 root.title('WinDroid')
 root.iconbitmap("icon.ico")
 root.resizable(0,0)
+root.overrideredirect(True)
 root.configure(bg = "white")
 image1 = Image.open("icon.ico")
-test = ImageTk.PhotoImage(image1)
+img = image1.resize((75, 70))  
+test = ImageTk.PhotoImage(img)
 label1 = Label(image=test,bg="white")
 label1.image = test
 # Position image
-label1.pack()
-Label(root,text="",bg="white").pack()
-Label(root,text="",bg="white").pack()
-Label(root,text="Ram:",font='san-serif 14 bold',bg="white").pack()
-reschoosen2 = ["512M","1G","1.5G","2G","3G","4G"]
+label1.place(x="90px",y="6px")
 
-entry = tk.StringVar()
-reschoosen = ttk.Combobox(root, width = 27,values=reschoosen2, textvariable = entry).pack()
-Label(root,text="",bg="white").pack()
-Label(root,text="",bg="white").pack()
-Label(root,text="",bg="white").pack()
-f8 = Button(root, text='Run',font='san-serif 16 bold', background='#01A6F0',foreground="white",borderwidth="0", padx=2,width="10",command=run).pack()
-Label(root,text="",bg="white").pack()
-Label(root,text="",bg="white").pack()
-
+Label(text="WinDroid", font='san-serif 26 bold', fg="#01a6f0", bg="white").place(x="160px", y="24px")
+root.after(5000,run)
 root.mainloop()
+
+
+
+
