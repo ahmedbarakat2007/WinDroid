@@ -3,7 +3,7 @@
 
 Run Android Easily on PC 
 
-Now It's On Version 1.0
+Now It's On Version 2.0
 
 It's an Android Emulator For Windows Devices Based on QEMU
 
